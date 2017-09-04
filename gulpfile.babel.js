@@ -1,6 +1,7 @@
 import gulp from 'gulp';
 import browserSync from 'browser-sync';
 import sass from 'gulp-sass';
+import cleanCSS from 'gulp-clean-css';
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', () => {
@@ -9,6 +10,14 @@ gulp.task('sass', () => {
         .pipe(gulp.dest("src/css"))
         .pipe(browserSync.stream());
 });
+
+//minify css
+gulp.task('minify-css', () => {
+  return gulp.src('src/css/style.css')
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('src/css/minified'));
+});
+
 
 
 // Move the javascript files into our /src/js folder
