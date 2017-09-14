@@ -2,23 +2,17 @@ import gulp from 'gulp';
 import browserSync from 'browser-sync';
 import sass from 'gulp-sass';
 import cleanCSS from 'gulp-clean-css';
+import concat from 'gulp-concat';
 
-// Compile sass into CSS & auto-inject into browsers
+// Compile sass into CSS & minify & bundle & auto-inject into browsers
 gulp.task('sass', () => {
     gulp.src(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'])
         .pipe(sass())
+        .pipe(cleanCSS())
+        .pipe(concat('style.min.css'))
         .pipe(gulp.dest("src/css"))
         .pipe(browserSync.stream());
 });
-
-//minify css
-gulp.task('minify-css', () => {
-  return gulp.src('src/css/style.css')
-    .pipe(cleanCSS())
-    .pipe(gulp.dest('src/css/minified'));
-});
-
-
 
 // Move the javascript files into our /src/js folder
 gulp.task('js', () => {
@@ -38,4 +32,4 @@ gulp.task('serve', ['sass'], () => {
     gulp.watch("src/*.html").on('change', browserSync.reload);
 });
 
-gulp.task('default', ['js','serve']);
+gulp.task('default', ['js','serve', 'sass']);
